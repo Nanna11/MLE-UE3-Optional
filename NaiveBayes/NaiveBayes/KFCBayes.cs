@@ -19,16 +19,42 @@ namespace NaiveBayes
             FileStream file = new FileStream(filepath, FileMode.Open);
             StreamReader sr = new StreamReader(file);
 
+            //double factorOfLessSpamThanHam = 6.46f;
+            //bool isSecondTime = false;
+
+            int helper = 0;
+            //todo: read out of config file
+            int amountOfSpamInDataSet = 747;
+
             string f;
             while ((f = sr.ReadLine()) != null)
             {
                 string[] result = f.Split("\t".ToArray<char>());
                 Instance i = new Instance(result[1], (Result)System.Enum.Parse(typeof(Result), result[0]));
-                instances.Add(i);
+                if (result[0] == "ham")
+                {
+                    helper++;
+                }
+                if (!(result[0] == "ham" && helper > amountOfSpamInDataSet))
+                {
+                    instances.Add(i);
+                }
+                // //adds every instance of spam approximatly 6.5 times to have about the same amount of ham and spam messages
+                // //pretty bad because data is manipulated (6.5 times higher probability for words in spam messages to be in spam than in ham messages)
+                //if(result[0] == "spam")
+                //{
+                //    for (int h = 1; h < factorOfLessSpamThanHam; h++)
+                //    {
+                //        if(h == 5 && isSecondTime)
+                //        {
+                //            break;
+                //        }
+                //        instances.Add(i);
+                //    }
+                //    if (!isSecondTime) isSecondTime = true;
+                //    else isSecondTime = false;
+                //}
             }
-
-
-
 
             int[,] Confusion = new int[3, 3];
             //get kfc packages
@@ -59,6 +85,7 @@ namespace NaiveBayes
             {
                 for (int j = 0; j < 3; j++)
                 {
+                    BeautifulConfusionMatrix.AddBlankSpaces(Confusion, Confusion[i, j], j);
                     Console.Write("{0} ", Confusion[i, j]);
                     //add to correct count if actual and calculated result were the same
                     if (i == j) correct += Confusion[i, j];

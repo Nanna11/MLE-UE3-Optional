@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Analyzer.cs" />
     <Compile Include="Bayes.cs" />
+    <Compile Include="BeautifulConfusionMatrix.cs" />
     <Compile Include="Instance.cs" />
     <Compile Include="KFCBayes.cs" />
     <Compile Include="Program.cs" />

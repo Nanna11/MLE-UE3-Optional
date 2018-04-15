@@ -88,7 +88,7 @@ namespace NaiveBayes
                     {
                         if (_WordsHam.ContainsKey(kvp.Key)) _WordsHam[kvp.Key] += 1;
                         else _WordsHam.Add(kvp.Key, 1);
-
+                        
                         if (!_WordsSpam.ContainsKey(kvp.Key)) _WordsSpam.Add(kvp.Key, 0);
                     }
                     else if (i.Result == Result.spam)
@@ -133,7 +133,11 @@ namespace NaiveBayes
             foreach(KeyValuePair<string, int> kvp in words)
             {
                 sum += kvp.Value;
-                pSpam *= Math.Pow((double)_WordsSpam[kvp.Key] / (double)_Spam.Count, kvp.Value) / (double)Factorial(kvp.Value);
+                double fact = (double)Factorial(kvp.Value);
+                double p = (double)_WordsSpam[kvp.Key] / (double)_Spam.Count;
+                double x = (Math.Pow(p, kvp.Value) / fact);
+                //if (x != 0)
+                pSpam = pSpam * x;
             }
             pSpam *= (double)Factorial(sum);
             return pSpam;
@@ -146,7 +150,11 @@ namespace NaiveBayes
             foreach (KeyValuePair<string, int> kvp in words)
             {
                 sum += kvp.Value;
-                pHam *= Math.Pow((double)_WordsSpam[kvp.Key] / (double)_Spam.Count, kvp.Value) / (double)Factorial(kvp.Value);
+                double fact = (double)Factorial(kvp.Value);
+                double p = (double)_WordsHam[kvp.Key] / (double)_Ham.Count;
+                double x = (Math.Pow(p, kvp.Value) / fact);
+                //if (x != 0)
+                pHam = pHam * x;
             }
             pHam *= (double)Factorial(sum);
             return pHam;
