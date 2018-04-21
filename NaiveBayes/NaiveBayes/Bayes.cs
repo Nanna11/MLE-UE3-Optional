@@ -136,7 +136,7 @@ namespace NaiveBayes
                 double fact = (double)Factorial(kvp.Value);
                 double p = (double)_WordsSpam[kvp.Key] / (double)_Spam.Count;
                 double x = (Math.Pow(p, kvp.Value) / fact);
-                //if (x != 0)
+                
                 pSpam = pSpam * x;
             }
             pSpam *= (double)Factorial(sum);
@@ -153,7 +153,7 @@ namespace NaiveBayes
                 double fact = (double)Factorial(kvp.Value);
                 double p = (double)_WordsHam[kvp.Key] / (double)_Ham.Count;
                 double x = (Math.Pow(p, kvp.Value) / fact);
-                //if (x != 0)
+                
                 pHam = pHam * x;
             }
             pHam *= (double)Factorial(sum);
