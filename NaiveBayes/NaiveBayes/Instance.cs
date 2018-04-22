@@ -44,7 +44,7 @@ namespace NaiveBayes
             }
         }
 
-        //returns the number of attributes
+        //returns the number of different words
         public int AttributeCount
         {
             get

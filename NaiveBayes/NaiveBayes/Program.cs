@@ -10,6 +10,7 @@ namespace NaiveBayes
     {
         static void Main(string[] args)
         {
+            //instance that tests naive bayes with instances in given file
             KFCBayes kb = new KFCBayes(10, "SMSSpamCollection");
             Console.ReadKey();
         }

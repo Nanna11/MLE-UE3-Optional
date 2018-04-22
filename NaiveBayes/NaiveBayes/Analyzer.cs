@@ -9,8 +9,7 @@ namespace NaiveBayes
 { 
     class Analyzer
     {
-        //analyzes the text an returns a dictionary with ascending, ongoing numbers of attributes and
-        //correspoding bool indicating if attribute is true or false
+        //analyzes instance for words contained in text
         public static Dictionary<string, int> Analyze(string text)
         {
             Dictionary<string, int> Words = new Dictionary<string, int>();
@@ -18,8 +17,10 @@ namespace NaiveBayes
             string t = Number(text);
             t = Link(t);
 
+            //seperate words
             string[] words = t.Split(' ');
 
+            //add to dictionary
             foreach (string s in words)
             {
                 if (Words.ContainsKey(s)) Words[s]++;
@@ -29,6 +30,7 @@ namespace NaiveBayes
             return Words;
         }
 
+        //replace all links by <<Link>> so they can be considered
         static string Link(string text)
         {
             string pattern = @"(\swww\..*\..*\s)";
@@ -36,6 +38,7 @@ namespace NaiveBayes
             return regex.Replace(text, " <<Link>> ");
         }
 
+        //replace all numbers by <<Number>> so they can be considered
         static string Number(string text)
         {
             string pattern = @"([0-9][0-9][0-9][0-9]+)";

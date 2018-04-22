@@ -12,8 +12,11 @@ namespace NaiveBayes
     {
         List<Instance> instances = new List<Instance>();
 
+        //k for how many packages to make for k-fold-cross
+        //filename of file to read instance data from
         public KFCBayes(int k, string filename)
         {
+            //read all ínstances from file
             string deploypath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string filepath = Path.Combine(deploypath, filename);
             FileStream file = new FileStream(filepath, FileMode.Open);
@@ -27,7 +30,9 @@ namespace NaiveBayes
                 instances.Add(i);
             }
 
-            int[,] Confusion = new int[3, 3];
+            //initialize confusion matrix
+            int[,] Confusion = new int[2, 2];
+
             //get kfc packages
             List<List<Instance>> packages = new List<List<Instance>>();
             for (int i = 0; i < k; i++)
@@ -52,9 +57,9 @@ namespace NaiveBayes
             double correct = 0;
 
             Console.WriteLine("\nConfusion Matrix:");
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < 2; j++)
                 {
                     BeautifulConfusionMatrix.AddBlankSpaces(Confusion, Confusion[i, j], j);
                     Console.Write("{0} ", Confusion[i, j]);
@@ -76,14 +81,17 @@ namespace NaiveBayes
             //create lists for learn and test data
             List<Instance> ToTest = packages[i];
             List<Instance> ToLearn = new List<Instance>();
+            //merge learning data into one list
             for (int j = 0; j < packages.Count; j++)
             {
                 if (j == i) continue;
                 ToLearn = ToLearn.Concat<Instance>(packages[j]).ToList<Instance>();
             }
 
+            //bayes algorithm to test with learning data
             Bayes b = new Bayes(ToLearn);
 
+            //classify each instance from test package and add to confusion matrix
             foreach (Instance instance in ToTest)
             {
                 Result? res = b.Classify(instance);
